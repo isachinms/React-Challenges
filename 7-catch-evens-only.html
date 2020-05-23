@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Catch Even Numbers </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class CatchEvens extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        number: '',
+                        evens: []
+                    }
+                }
+
+                componentDidMount() {
+                    setInterval(() => {
+                        const number = Math.round(Math.random() * 100)
+                        this.setState((prevState) => ({
+                            number,
+                            evens: number % 2 === 0 ? [].concat(prevState.evens, number) : prevState.evens
+                        }))
+                    }, 1000)
+                }
+
+                render() {
+                    // console.log(this.state.evens)
+                    return (
+                        <div>
+                            <h1> {this.state.number} </h1>
+                            <h2> All Evens - {this.state.evens.length} </h2>
+                            <ul>
+                            {
+                                this.state.evens.map((even,i) => {
+                                    return <li key={i} > {even} </li>
+                                })
+                            }
+                            </ul>
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<CatchEvens />, rootHandle)
+        </script>
+    </body>
+</html>

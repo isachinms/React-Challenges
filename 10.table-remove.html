@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Remove button in Table </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class RemoveUser extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        users: [
+                            {id: 1, name: 'user1', email: 'user1@gmail.com'},
+                            {id: 2, name: 'user2', email: 'user2@gmail.com'},
+                            {id: 3, name: 'user3', email: 'user3@gmail.com'},
+                            {id: 4, name: 'user4', email: 'user4@gmail.com'},
+                            {id: 5, name: 'user5', email: 'user5@gmail.com'}
+                        ]
+                    }
+                }
+
+                handleClick = (id) => {
+                    console.log(id)
+                    this.setState((prevState) => ({
+                        users: prevState.users.filter(user => user.id !== id)
+                    }))
+                }
+
+                render() {
+                    return (
+                        <div>
+                            <h2>Listing Users - {this.state.users.length} </h2>
+                            <table border="2" style={{width: "40%"}}>
+                                <thead>
+                                    <tr>
+                                        <th> # </th>
+                                        <th> Name </th>
+                                        <th> Email </th>
+                                        <th> Action </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        this.state.users.map(user => {
+                                            return (
+                                                <tr key={user.id} align="center">
+                                                    <td> {user.id} </td>
+                                                    <td> {user.name} </td>
+                                                    <td> {user.email} </td>
+                                                    <td><button onClick={() => {this.handleClick(user.id)}}> remove </button></td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<RemoveUser />, rootHandle)
+        </script>
+    </body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title> Distance Calculator </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class DistanceCalculator extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        kms: 0,
+                        miles: 0
+                    }
+                }
+
+                handleChange = (e) => {
+                    const miles = e.target.value
+                    this.setState({ miles, kms: (1.6 * miles).toFixed(2) })
+                }
+
+                render() {
+                    return (
+                        <div className="col-md-4 offset-md-4 card bg-light text-center" >
+                            <div className="card-body" >
+                                <h2 className="card-title">Distance Calculator</h2>
+                                <p><b>Kms :</b> {this.state.kms} </p>
+                                <p><b>Miles :</b> {this.state.miles} </p>
+                                <input type="range" step="1" maxp="100" style={{width: "50%"}} value={this.state.miles} onChange={this.handleChange} />
+                            </div>
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<DistanceCalculator />, rootHandle)
+        </script>
+    </body>
+</html>

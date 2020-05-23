@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Odd Even </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+        
+            class OddEven extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        number: '',
+                        numbers: []
+                    }
+                }
+
+                componentDidMount() {
+                    setInterval(() => {
+                        const number = Math.round(Math.random() * 100)
+                        this.setState((prevState) => ({
+                                number,
+                                numbers: [].concat(prevState.numbers, number)
+                            }))
+                    }, 1000 )
+                }
+
+                render() {
+                    return (
+                        <div>
+                            <h1> {this.state.number} </h1>
+                            <h2> All Numbers - {this.state.numbers.length} </h2>
+                            <ul>
+                            {
+                                this.state.numbers.map((num, i) => {
+                                    return num%2 === 0 ? <li key={i} style={{color: 'red'}} > {num} </li> : 
+                                    <li key={i} style={{color: 'blue'}} > {num} </li>
+                                })
+                            }
+                            </ul>
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<OddEven />, rootHandle)
+        </script>
+    </body>
+</html>

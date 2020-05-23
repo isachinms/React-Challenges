@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title> Listing Users </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class SlowTyping extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        text: '',
+                        word: ''
+                    }
+                }
+
+                componentDidMount() {
+                    const input = prompt('Provide your text to slow print')
+                    for(const word of input) {
+                        setTimeout(() => {
+                            this.setState((prevState) => ({
+                                text: prevState.text + prevState.word,
+                                word
+                            }))
+                        }, 5000)
+                    }
+                }
+
+                render() {
+                    return (
+                        <h2>{this.state.text + this.state.word} </h2>
+                    )
+                }
+            }
+
+            ReactDOM.render(<SlowTyping />, rootHandle)
+        </script>
+    </body>
+</html>

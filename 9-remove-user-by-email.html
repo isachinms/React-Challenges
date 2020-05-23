@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Remove User By Email </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class RemoveUser extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        users: [
+                            {id: 1, name: 'user1', email: 'user1@gmail.com'},
+                            {id: 2, name: 'user2', email: 'user2@gmail.com'},
+                            {id: 3, name: 'user3', email: 'user3@gmail.com'},
+                            {id: 4, name: 'user4', email: 'user4@gmail.com'},
+                            {id: 5, name: 'user5', email: 'user5@gmail.com'}
+                        ],
+                        email: ''
+                    }
+                }
+
+                handleChange = (e) => {
+                    this.setState({ email: e.target.value })
+                }
+
+                handleSubmit = (e) => {
+                    e.preventDefault()
+                    const email = this.state.email
+                    const checkEmail = this.state.users.find(user => user.email === email)
+                    console.log(checkEmail)
+                    if(checkEmail) {
+                        this.setState((prevState) => ({
+                            users: prevState.users.filter(user => user.email !== email),
+                            email: ''
+                        }))
+                    } else {
+                        alert('No user found with the mentioned email')
+                    }
+                }
+
+                render() {
+                    return (
+                        <div>
+                            <h1>Listing Users - {this.state.users.length} </h1>
+                            <table border="2" style={{width: "40%"}}>
+                                <thead>
+                                    <tr>
+                                        <th> # </th>
+                                        <th> Name </th>
+                                        <th> Email </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        this.state.users.map(user => {
+                                            return (
+                                                <tr key={user.id} align="center">
+                                                    <td> {user.id} </td>
+                                                    <td> {user.name} </td>
+                                                    <td> {user.email} </td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table><br/>
+                            <form onSubmit={this.handleSubmit}>
+                                <input type="text" placeholder="Enter email to remove" value={this.state.email} onChange={this.handleChange} />
+                                <input type="submit" value="remove"/>
+                            </form>
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<RemoveUser />, rootHandle)
+        </script>
+    </body>
+</html>

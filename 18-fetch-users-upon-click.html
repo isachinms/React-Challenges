@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+        <title> Fetch Users Upon Click </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+        <script src="./js/axios.min.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class FetchUsers extends React.Component {
+                constructor(){
+                    super()
+                    this.state = {
+                        users: [],
+                        isFetched: false
+                    }
+                }
+
+                handleClick = () => {
+                    axios.get('https://jsonplaceholder.typicode.com/users')
+                        .then((response) => {
+                            const users = response.data
+                            this.setState({ users, isFetched: true})
+                        })
+                        .catch((err) => {
+                            alert(err)
+                        })
+                }
+
+                render() {
+                    return (
+                        this.state.isFetched ? (
+                            <div>
+                            <h2>Listing All Users - {this.state.users.length} </h2>
+                            <ul>
+                            {
+                                this.state.users.map(user => {
+                                    return <li key={user.id} > {user.name} </li>
+                                })
+                            }
+                            </ul>
+                            </div>
+                        ) : <button onClick={this.handleClick} >Fetch Users </button>
+                    )
+                }
+            }
+        
+
+            ReactDOM.render(<FetchUsers />, rootHandle)
+        </script>
+    </body>
+</html>

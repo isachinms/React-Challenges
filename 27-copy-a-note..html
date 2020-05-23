@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title> My Notes </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            function Notes(props) {
+                return (
+                    <div className="card" style={{height: "300px", backgroundColor: "#facad7"}}>
+                    <div className="card-body">
+                    <h3 className="card-title">{props.note.title} - <button className="btn btn-sm bg-primary text-light" onClick={() => props.handleClick(props.note.id)}>Make a copy</button></h3>
+                    <ul>
+                    {
+                        props.note.body.map((item,i) => {
+                            return (
+                                <li key={i}>{item}</li>
+                            )
+                        })
+                    }
+                    </ul>
+                    </div>
+                    </div>
+                )
+            }
+
+            class TakeACopy extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        notes: [
+                            {id: 1, title: 'To do list', body: ['workout', 'shopping', 'reading', 'evening walking', 'office meeting']},
+                            {id: 2, title: 'Groceries to buy', body: ['sugar', 'tea powder', 'perfume', 'onion', 'chat masala', 'choco powder']},
+                            {id: 3, title: 'books to be read', body: ['the secret', 'can love happen twice', 'the kite runner', 'coders at work', 'zero to one']}
+                        ]
+                    }
+                }
+
+                handleClick = (id) => {
+                    const note = this.state.notes.find(note => note.id === id)
+                    const copy = Object.assign({}, note)
+                    copy.id = this.state.notes.length + 1
+                    this.setState((prevState) => ({
+                        notes: [].concat(prevState.notes, copy)
+                    }))
+                }
+
+                render() {
+                    return (
+                        <div className="container">
+                        <h1 className="text-center">My Notes</h1>
+                        {
+                            this.state.notes.map(note => {
+                                // console.log(note.id)
+                                return ( 
+                                    <div className="d-inline-flex flex-wrap bg-light m-2" key={note.id}>
+                                    <Notes note={note} handleClick={this.handleClick} />
+                                    </div>
+                                )
+                            })
+                        }
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<TakeACopy />, rootHandle)
+        </script>
+    </body>
+</html>

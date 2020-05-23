@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title> Button Timeout </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class ButtonTimeout extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        number: '',
+                        isEnableBtn: true
+                    }
+                }
+
+                handleClick = () => {
+                    const number = Math.round(Math.random() * 100)
+                    this.setState({ number, isEnableBtn: false})
+                    setTimeout(() => {
+                        this.setState({ isEnableBtn: true})
+                    }, 3000)
+                }
+
+                render() {
+                    return (
+                        <div className="text-center" style={{lineHeight: "200px", alignItems: "center"}}>
+                        {
+                            this.state.isEnableBtn ? <button className="btn btn-primary btn-lg" onClick={this.handleClick} >Generate</button> : <p className="display-2"> {this.state.number} </p>
+                        }
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<ButtonTimeout />, rootHandle)
+        </script>
+    </body>
+</html>

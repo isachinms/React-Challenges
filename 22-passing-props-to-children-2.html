@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+        <title> Listing Users </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class Parent extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        names: ['karan', 'arjun']
+                    }
+                }
+
+                render() {
+                    return (
+                        <div>
+                            <h1>Parent Component</h1>
+                            { this.state.names.map((name,i) => {
+                                return <Child key={i} name={name} />
+                            })}
+                        </div>
+                    )
+                }
+            }
+
+            function Child(props) {
+                return (
+                    <h2>Child Component - {props.name} </h2>
+                )
+            }
+
+            ReactDOM.render(<Parent />, rootHandle)
+        </script>
+    </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title> Raffle </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class Raffle extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        players: ['Shikar Dhawan', 'Rohit Sharma', 'KL Rahul', 'Virat Kohli', 'Shreyas Iyer', 'Manish Pandey', 'Ravindra Jedeja', 'Yajuvendra Chahal', 'Kuldeep Yadav', 'Mohammad Shami', 'Jasprit Bumrah'],
+                        drawnPlayer: ''
+                    }
+                }
+
+                handleClick = () => {
+                    const random = Math.round(Math.random() * (this.state.players.length - 1))
+                    // console.log(this.state.players)
+                    this.setState((prevState) => {
+                        return {
+                        players: prevState.players.filter((player,i) => i !== random),
+                        drawnPlayer: prevState.players[random]
+                    }})
+                }
+
+                render() {
+                    // console.log(this.state.drawnPlayer, this.state.players)
+                    return (
+                        <div className="container col-md-4 text-center">
+                            <h1>Indian Cricket Team</h1><hr/>
+                            <p style={{color: "red"}}>{this.state.drawnPlayer ? this.state.drawnPlayer : 'Start Draw' }</p>
+                        <div className="col-md-10 m-auto">
+                            <ul className="list-group">
+                            {   this.state.players.length ? 
+                                this.state.players.map((player,i) => {
+                                    return <li key={i} className="list-group-item">{player}</li>
+                                }) : <p>No more Players</p>
+                            }
+                            </ul>
+                            <button className="btn btn-primary btn-lg btn-block" disabled={this.state.players.length <= 0} onClick={this.handleClick}>Draw</button>
+                        </div>
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<Raffle />, rootHandle)
+        </script>
+    </body>
+</html>

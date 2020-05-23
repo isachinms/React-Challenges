@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Listing Employees </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            const employees = [
+                { id: 1, name: 'john', gender: 'male', department: 'tech'},
+                { id: 2, name: 'donna', gender: 'female', department: 'tech'},
+                { id: 3, name: 'sam', gender: 'male', department: 'finance'},
+                { id: 1, name: 'michelle', gender: 'female', department: 'finance' }
+            ]
+
+            const ele = (
+                <div>
+                    <h1> Employees List </h1><hr/>
+                    <h2> Gender Wise </h2>
+                    <h3> Male </h3>
+                    <ul>
+                    {
+                        employees.filter(empl => empl.gender === 'male').map(employee => {
+                            return <li key={employee.id}> {employee.name} - {employee.department} department </li>
+                        })
+                    }
+                    </ul>
+
+                    <h3> Female </h3>
+                    <ul>
+                    {
+                        employees.filter(empl => empl.gender === 'female').map(employee => {
+                            return <li key={employee.id} > {employee.name} - {employee.department} department </li>
+                        })
+                    }
+                    </ul><hr/>
+
+                    <h2> Department Wise </h2>
+                    <h3> Tech </h3>
+                    <ul>
+                    {
+                        employees.filter(empl => empl.department === 'tech').map(employee => {
+                            return <li key={employee.id} > {employee.name} - {employee.gender} </li>
+                        })
+                    }
+                    </ul>
+
+                    <h3> Finance </h3>
+                    <ul>
+                    {
+                        employees.filter(empl => empl.department === 'finance').map(employee => {
+                            return <li key={employee.id} > {employee.name} - {employee.gender} </li>
+                        })
+                    }
+                    </ul>
+                    
+                </div>
+            )
+
+            ReactDOM.render(ele, rootHandle)
+        </script>
+    </body>
+</html>

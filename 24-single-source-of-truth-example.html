@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <div  id="root">
+
+        </div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+        <script src="./js/axios.min.js"></script>
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class App extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        users: [
+                            {id: 1, name: 'sachin'},
+                            {id: 2, name: 'virat'},
+                            {id: 3, name: 'rohit'},
+                            {id: 4, name: 'jadeja'},
+                            {id: 5, name: 'shivam'}
+                        ]
+                    }
+                }
+
+                handleClick = (id) => {
+                    this.setState(prevState => ({
+                        users: prevState.users.filter(user => user.id != id)
+                    }))
+                }
+
+                render() {
+                    return (
+                        <div>
+                            <UsersTable users={this.state.users} handleClick={this.handleClick}/>
+                            <UsersList users={this.state.users} handleClick={this.handleClick} />
+                        </div>
+                    )
+                }
+            }
+
+            function UsersTable(props) {
+                return (
+                    <div>
+                        <h1> Users Table - {props.users.length} </h1>
+                        <table border="1px">
+                            <thead>
+                                <tr>
+                                    <th> # </th>
+                                    <th> Name </th>
+                                    <th> Action </th>                                    
+                                </tr>
+                            </thead>
+                            <tbody>                                
+                                    {
+                                        props.users.map(user => {
+                                            return (
+                                                <tr key={user.id}>
+                                                <td> {user.id} </td>
+                                                <td> {user.name} </td>
+                                                <td><button onClick={() => {
+                                                    props.handleClick(user.id)
+                                                }}> remove </button></td>
+                                                </tr>
+                                            )
+                                        })
+                                    }                               
+                            </tbody>
+                        </table>
+                    </div>
+                )
+            }
+
+            function UsersList(props) {
+                return (
+                    <div>
+                        <h1> Users List - {props.users.length} </h1>
+                        <ul>
+                            {
+                                props.users.map(user => {
+                                    return <li key={user.id}>{user.name} - <button onClick={() => {
+                                        props.handleClick(user.id)
+                                    }}> remove </button></li>
+                                })
+                            }
+                        </ul>
+                    </div>
+                )
+            }
+
+            ReactDOM.render(<App />, rootHandle)
+        </script>
+    </body>
+</html>
