@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title> JSON Placeholder Dashboard </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+        <script src="./js/axios.min.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class Dashboard extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        users: [],
+                        posts: [],
+                        todos: [],
+                        clickedAt: ''
+                    }
+                }
+
+                handleClick = (selected) => {
+                    this.setState({ clickedAt: selected})
+                }
+
+                componentDidMount() {
+                    const usersURL = 'https://jsonplaceholder.typicode.com/users'
+                    const postsURL = 'https://jsonplaceholder.typicode.com/posts'
+                    const todosURL = 'https://jsonplaceholder.typicode.com/todos'
+
+                    axios.all([ axios.get(usersURL), axios.get(postsURL), axios.get(todosURL) ])
+                        .then((response) => {
+                            const [ users, posts, todos ] = response
+                            this.setState({ users: users.data, posts: posts.data, todos: todos.data})
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                }
+
+                render() {
+                    // console.log(this.state)
+                    return (
+                        <div className="col-md-6 offset-md-3 bg-light text-center">
+                        <h1>JSON Placeholder Dashboard</h1>
+                        <div className="nav nav-tabs justify-content-center mb-3">
+                        <button className="btn btn-md" onClick={() => this.handleClick('posts')}>Posts - {this.state.posts.length} </button>
+                        <button className="btn btn-md" onClick={() => this.handleClick('users')}>Users - {this.state.users.length} </button>
+                        <button className="btn btn-md" onClick={() => this.handleClick('todos')}>Todos - {this.state.todos.length} </button>
+                        </div>
+                        { this.state.clickedAt === 'users' && <ListUsers users={this.state.users} /> }
+                        { this.state.clickedAt === 'posts' && <ListPosts posts={this.state.posts} /> }
+                        { this.state.clickedAt === 'todos' && <ListTodos todos={this.state.todos} /> }
+                        </div>
+                    )
+                }
+            }
+
+            function ListUsers(props) {
+                return (
+                    <ol className="text-left">
+                    {
+                        props.users.map(user => {
+                            return <li key={user.id} >{user.name} - {user.email}</li>
+                        })
+                    }
+                    </ol>
+                )
+            }
+
+            function ListPosts(props) {
+                return (
+                    <ol className="text-left">
+                    {
+                        props.posts.map(post => {
+                            return <li key={post.id} >{post.title} </li>
+                        })
+                    }
+                    </ol>
+                )
+            }
+
+            function ListTodos(props) {
+                return (
+                    <ol className="text-left">
+                    {
+                        props.todos.map(todo => {
+                            return <li key={todo.id} >{todo.title} </li>
+                        })
+                    }
+                    </ol>
+                )
+            }
+
+            ReactDOM.render(<Dashboard/>, rootHandle)
+        </script>
+    </body>
+</html>

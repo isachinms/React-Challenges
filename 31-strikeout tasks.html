@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+        <title> Strikeout Tasks </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class StrikeOutTasks extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        tasks: [
+                            {id: 1, name: 'get the website live', isCompleted: false},
+                            {id: 2, name: 'work on user validation', isCompleted: false},
+                            {id: 3, name: 'automate the deployment process', isCompleted: true}
+                        ]
+                    }
+                }
+
+                handleChange = (id) => {
+                    this.setState((prevState) => ({
+                        tasks: prevState.tasks.map(task => task.id === id ? Object.assign({}, task, {isCompleted: !task.isCompleted}) : task)
+                    }))
+                }
+
+                render() {
+                    console.log(this.state.tasks)
+                    return (
+                        <div>
+                        <h2>Tasks - {this.state.tasks.length}</h2>
+                        <table border="1" style={{width:"40%"}}>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Task</th>
+                                    <th>completed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                this.state.tasks.map(task => {
+                                    return (
+                                        <tr key={task.id} align="center">
+                                            <td>{task.id}</td>
+                                            <td>{task.isCompleted ? <s>{task.name}</s> : task.name }</td>
+                                            <td><input type="checkbox" checked={task.isCompleted} onChange={() => this.handleChange(task.id)}/></td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                            </tbody>
+                        </table>
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<StrikeOutTasks />, rootHandle)
+        </script>
+    </body>
+</html>

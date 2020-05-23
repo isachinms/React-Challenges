@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+        <title> Dropdown Background Color Selection </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class ChangeBackground extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        colors: ['red','blue','green','orange','yellow','aqua']
+                    }
+                }
+
+                handleChange = (e) => {
+                    document.bgColor = e.target.value
+                }
+
+                render() {
+                    return (
+                        <div>
+                        <label>color
+                        <select value={this.state.selectedColor} onChange={this.handleChange}>
+                            <option value="">select</option>
+                            {
+                                this.state.colors.map((color,i) => {
+                                    return <option key={i} value={color} >{color}</option>
+                                })
+                            }
+                        </select></label>
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<ChangeBackground />, rootHandle)
+        </script>
+    </body>
+</html>

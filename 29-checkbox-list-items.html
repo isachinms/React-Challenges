@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+        <title> Select Using Checkbox </title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            function UserTable(props) {
+                return (
+                    <table border="1">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Select</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        props.users.map(user => {
+                            return <tr key={user.id}>
+                                <td>{user.id}</td>
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
+                                <td><input type="checkbox" onChange={() => props.handleCheck(user)}/></td>
+                            </tr>
+                        })
+                    }
+                    </tbody>
+                    </table>
+                )
+            }
+
+            function CheckedList(props) {
+                return (
+                    <div>
+                    <h2>Selected Users</h2>
+                    <ul>
+                    {
+                        props.selectedUsers.map(user => {
+                            return <li key={user.id}>{user.name} - {user.email} </li>
+                        })
+                    }
+                    </ul>
+                    </div>
+                )
+            }
+
+            class CheckboxList extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        users: [
+                            {id: 1, name: 'user1', email: 'user1@gmail.com'},
+                            {id: 2, name: 'user2', email: 'user2@gmail.com'},
+                            {id: 3, name: 'user3', email: 'user3@gmail.com'},
+                            {id: 4, name: 'user4', email: 'user4@gmail.com'}
+                        ],
+                        selectedUsers: []
+                    }
+                }
+
+                handleCheck = (user) => {
+                    this.setState((prevState) => ({
+                        selectedUsers: prevState.selectedUsers.find(checkedUser => checkedUser.id===user.id) ? prevState.selectedUsers.filter(checkedUser => checkedUser.id !== user.id) : [].concat(prevState.selectedUsers, user)
+                    }))
+                }
+
+                render() {
+                    return (
+                        <div>
+                            <h1>Listing Users - {this.state.users.length}</h1>
+                            <UserTable users={this.state.users} handleCheck={this.handleCheck} />
+                            <CheckedList selectedUsers={this.state.selectedUsers} />
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<CheckboxList />, rootHandle)
+        </script>
+    </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Currency Converter</title>
+    </head>
+    <body>
+        <div  id="root">
+
+        </div>
+
+        <script src="./js/react.development.js"></script>
+        <script src="./js/react-dom.development.js"></script>
+        <script src="./js/babel.js"></script>
+        <script src="./js/axios.min.js"></script>
+        <script type="text/babel">
+            const rootHandle = document.getElementById('root')
+
+            class CurrencyConverter extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        inr: 0,
+                        usd: 0,
+                        usdInr: 0
+                    }
+                }
+
+                handleChange = (e) => {
+                    const usd = e.target.value
+                    this.setState((prevState) => {
+                        return {
+                            usd,
+                            inr: (prevState.usdInr * usd).toFixed(2)
+                        }
+                    })
+                }
+
+                componentDidMount() {
+                    axios.get("http://www.apilayer.net/api/live?access_key=&currencies=INR")
+                    .then((response) => {
+                        const usdInr = response.data.quotes.USDINR.toFixed(2)
+                        this.setState({ usdInr })
+                    })
+                }
+
+                render() {
+                    return (
+                        <div>
+                            <h1> Currency Converter </h1>
+                            <h2> INR - {this.state.inr} </h2>
+                            <h2> USD - {this.state.usd} </h2>
+                            <input type="range" max="100" min="0" step="1" value={this.state.usd} onChange={this.handleChange}/>
+                            <p> note - 1 USD = {this.state.usdInr} INR </p>
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<CurrencyConverter />, rootHandle)
+
+        </script>
+    </body>
+</html>
